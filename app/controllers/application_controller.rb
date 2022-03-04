@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  def hello
-    render html: "hello, world!"
-  end
+   # ApplicationControllerにSessionヘルパーモジュールを組み込むことで全てのcontrollerでSessionヘルパーモジュールを使用できる。
+  include SessionsHelper
 end
