@@ -13,4 +13,5 @@ Rails.application.routes.draw do
   resources :users
   resources :account_activations, only: [:edit]     # editアクションに関するURLだけ作成
   resources :password_resets,     only: [:new, :create, :edit, :update]     # :new, :create, :edit, :updateアクションに関するURLだけ作成
+  resources :microposts,          only: [:create, :destroy]
 end

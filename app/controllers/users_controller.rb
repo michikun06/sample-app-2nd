@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   # GET /users/:id/show
   def show
     @user = User.find(params[:id])
-    redirect_to root_url and return unless @user.activated?
+    @microposts = @user.microposts.paginate(page: params[:page])
   end
   
   # GET /users/new
@@ -68,14 +68,9 @@ class UsersController < ApplicationController
                                    :password_confirmation)
     end
     
-    # ログイン済みユーザーかどうか確認
-    def logged_in_user
-      unless logged_in?
-        store_location     # アクセスしようとしたURLを覚えておくメソッド(app/helper/sessions_helper.rb)
-        flash[:danger] = "Please log in."
-        redirect_to login_url
-      end
-    end
+    # beforeフィルター
+    # logged_in_userメソッドはapplication_controller内のprivateメソッドで定義したため継承下にある
+    # users_cntrollerは使用できる。
     
     # 正しいユーザーかどうか確認
     def correct_user
