@@ -10,8 +10,18 @@ Rails.application.routes.draw do
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'
   delete '/logout',  to: 'sessions#destroy'
+  
+  # GET /users/1/following
+  # GET /users/1/followers
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
+  
   resources :users
   resources :account_activations, only: [:edit]     # editアクションに関するURLだけ作成
   resources :password_resets,     only: [:new, :create, :edit, :update]     # :new, :create, :edit, :updateアクションに関するURLだけ作成
   resources :microposts,          only: [:create, :destroy]
+  resources :relationships,       only: [:create, :destroy]
 end

@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   # index、edit、updateアクションが発動する前に、logged_in_userメソッドをを呼び出す
-  before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
+  before_action :logged_in_user, only: [:index, :edit, :update, :destroy,
+                                                          :following, :followers]
   
   # edit、updateアクションが発動する前に、correct_userメソッドをを呼び出す
   before_action :correct_user,   only: [:edit, :update]
@@ -59,6 +60,24 @@ class UsersController < ApplicationController
     User.find(params[:id]).destroy
     flash[:success] = "User deleted"
     redirect_to users_url
+  end
+  
+  # GET /users/:id/following
+  def following
+    @title = "Following"
+    @user  = User.find(params[:id])
+    @users = @user.following.paginate(page: params[:page])
+    render 'show_follow'
+  end
+  
+  # 上下二つのインスタンス変数を同じにしておく事で同じテンプレートを使用することができる。
+  
+  # GET /users/:id/followers
+  def followers
+    @title = "Followers"
+    @user  = User.find(params[:id])
+    @users = @user.followers.paginate(page: params[:page])
+    render 'show_follow'
   end
 
   private
